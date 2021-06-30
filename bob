@@ -1,0 +1,13 @@
+$ipLocalEndPoint  = new-object Net.IPEndPoint ([system.net.ipaddress]::Any,$lport)
+$ipRemoteEndPoint  = new-object Net.IPEndPoint ($remoteip,$rport)
+$tcpClientA = new-object Net.Sockets.UdpClient($ipLocalEndPoint)
+write-host “Conecting to ” $target
+try {
+  $tcpClientA.connect($ipRemoteEndPoint)
+  
+$tcpClientA.Send(1,1)
+$tcpClientA.close()
+}
+catch {
+  write-host “Error connecting.”
+}
