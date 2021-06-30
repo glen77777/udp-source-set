@@ -1,3 +1,10 @@
+$target = ”192.168.171.128”
+$lport = "7775"
+$rport = "7777"
+$launch = "192.168.1.68"
+
+$localip  = [System.Net.IPAddress]::Parse($launch)
+$remoteip  = [System.Net.IPAddress]::Parse($target)
 $ipLocalEndPoint  = new-object Net.IPEndPoint ([system.net.ipaddress]::Any,$lport)
 $ipRemoteEndPoint  = new-object Net.IPEndPoint ($remoteip,$rport)
 $tcpClientA = new-object Net.Sockets.UdpClient($ipLocalEndPoint)
