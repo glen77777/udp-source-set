@@ -1,8 +1,8 @@
 Function port-scan-tcp {
-  param($hosts,$ports)
+  param($hosts,$ports,$lport)
   if (!$ports) {
-    Write-Host "usage: test-port-tcp <host|hosts> <port|ports> sourceport"
-    Write-Host " e.g.: test-port-tcp 192.168.1.2 445 4501`n"
+    Write-Host "usage: test-port-tcp <host|hosts> <port|ports> localport"
+    Write-Host " e.g.: test-port-tcp 192.168.1.2 445 443`n"
     return
   }
   $out = ".\scanresults.txt"
@@ -14,9 +14,6 @@ Function port-scan-tcp {
       continue
     }
     $msg = "$h,tcp,$p,"
-    $launch = "192.168.1.68"
-    $lport = "443"
-    $localip = [System.Net.IPAddress]::Parse($launch)
     $ipLocalEndPoint  = new-object Net.IPEndPoint([System.Net.IPAddress]::Any,$lport)
     $t = new-Object system.Net.Sockets.TcpClient($ipLocalEndPoint)
     $c = $t.ConnectAsync($h,$p)
@@ -38,13 +35,3 @@ Function port-scan-tcp {
   }
 }
 
-# .NET 4.5
-
-# Examples:
-#
-# test-port-tcp 10.10.0.1 137
-# test-port-tcp 10.10.0.1 (135,137,445)
-# test-port-tcp (gc .\ips.txt) 137
-# test-port-tcp (gc .\ips.txt) (135,137,445)
-# 0..255 | foreach { test-port-tcp 10.10.0.$_ 137 }
-# 0..255 | foreach { test-port-tcp 10.10.0.$_ (135,137,445) }
